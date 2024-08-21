@@ -9,12 +9,10 @@
   <ItemGroup>
     <Folder Include="Application\" />
     <Folder Include="Application\Services\" />
-    <Folder Include="Domain\" />
-    <Folder Include="Domain\Entities\" />
-    <Folder Include="Domain\Repositories\" />
+    <Folder Include="DataAccess\" />
+    <Folder Include="DataAccess\Models\" />
+    <Folder Include="DataAccess\Repositories\" />
     <Folder Include="Infrastructure\" />
-    <Folder Include="Infrastructure\Data\" />
-    <Folder Include="Infrastructure\Data\Repositories\" />
     <Folder Include="Presentation\" />
     <Folder Include="Presentation\Controllers\" />
   </ItemGroup>

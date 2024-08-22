@@ -7,12 +7,15 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Infrastructure\**" />
+    <Content Remove="Infrastructure\**" />
+    <EmbeddedResource Remove="Infrastructure\**" />
+    <None Remove="Infrastructure\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Folder Include="Application\" />
     <Folder Include="Application\Services\" />
-    <Folder Include="DataAccess\" />
-    <Folder Include="DataAccess\Models\" />
-    <Folder Include="DataAccess\Repositories\" />
-    <Folder Include="Infrastructure\" />
     <Folder Include="Presentation\" />
     <Folder Include="Presentation\Controllers\" />
   </ItemGroup>

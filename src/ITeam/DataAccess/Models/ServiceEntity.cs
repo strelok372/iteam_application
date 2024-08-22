@@ -1,6 +1,6 @@
 namespace ITeam.DataAccess.Models;
 
-public class ServiceEntity
+public record ServiceEntity
 {
     public int Id { get; set; }
 

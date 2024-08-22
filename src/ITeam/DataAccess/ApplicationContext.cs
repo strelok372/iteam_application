@@ -6,6 +6,8 @@ namespace ITeam.DataAccess;
 public class ApplicationContext : DbContext
 {
     public DbSet<ServiceEntity> Services { get; set; }
+    public DbSet<ServiceTypeEntity> ServiceTypes { get; set; }
+
     public ApplicationContext(DbContextOptions<ApplicationContext> options) : base(options)
     {
         Database.EnsureCreated();

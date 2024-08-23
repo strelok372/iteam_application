@@ -4,9 +4,9 @@ namespace ITeam.DataAccess.Repositories;
 
 public interface IServiceRepository
 {
-    Task<ServiceEntity?> GetServiceByIdAsync(int serviceId);
     Task<IEnumerable<ServiceEntity>> GetAllServicesAsync();
-    Task AddServiceAsync(ServiceEntity service);
+    Task<ServiceEntity?> GetServiceByIdAsync(int serviceId);
+    Task<ServiceEntity> AddServiceAsync(ServiceEntity service);
     Task UpdateServiceAsync(ServiceEntity service);
-    Task DeleteServiceAsync(int serviceId);
+    Task DeleteServiceAsync(ServiceEntity service);
 }

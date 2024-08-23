@@ -16,25 +16,35 @@ public class ServiceService : IServiceService
         _serviceTypeRepository = serviceTypeRepository;
     }
 
-    public async Task AddServiceAsync(ServiceDto service)
+    public async Task<ServiceDto> AddServiceAsync(ServiceDto service)
     {
-        if (_serviceTypeRepository.GetByIdAsync(service.ServiceTypeId) is null)
+        if (_serviceTypeRepository.GetServiceTypeByIdAsync(service.ServiceTypeId) is null)
             throw new Exception("ServiceTypeId не существует");
 
-        await _serviceRepository.AddServiceAsync(new ServiceEntity() { Description = service.Description, ServiceTypeId = service.ServiceTypeId });
+        var newService = await _serviceRepository.AddServiceAsync(new ServiceEntity()
+        {
+            Id = 0,
+            Description = service.Description,
+            ServiceTypeId = service.ServiceTypeId
+        });
+
+        return new ServiceDto(newService);
     }
 
     public async Task DeleteServiceAsync(int serviceId)
     {
-        if (_serviceRepository.GetServiceByIdAsync(serviceId) is null)
-            throw new ServiceNotFoundExeption(serviceId);
-
-        await _serviceRepository.DeleteServiceAsync(serviceId);
+        await _serviceRepository.DeleteServiceAsync(
+            await _serviceRepository.GetServiceByIdAsync(serviceId) ?? throw new ServiceNotFoundExeption(serviceId));
     }
 
     public async Task<IEnumerable<ServiceDto>> GetAllServicesAsync()
     {
         return (await _serviceRepository.GetAllServicesAsync()).Select(service => new ServiceDto(service));
+    }
+
+    public async Task<ServiceDto> GetServiceAsync(int serviceId)
+    {
+        return new ServiceDto(await _serviceRepository.GetServiceByIdAsync(serviceId) ?? throw new ServiceNotFoundExeption(serviceId));
     }
 
     public async Task UpdateServiceDescriptionAsync(int serviceId, string description)
@@ -47,7 +57,7 @@ public class ServiceService : IServiceService
     {
         var service = await _serviceRepository.GetServiceByIdAsync(serviceId) ?? throw new ServiceNotFoundExeption(serviceId);
 
-        if (_serviceTypeRepository.GetByIdAsync(serviceTypeId) is null)
+        if (_serviceTypeRepository.GetServiceTypeByIdAsync(serviceTypeId) is null)
             throw new ServiceTypeNotFoundExeption(serviceTypeId);
 
         await _serviceRepository.UpdateServiceAsync(service with { ServiceTypeId = serviceTypeId });

@@ -9,7 +9,7 @@ public class ServiceTypeRepository : IServiceTypeRepository
 
     public ServiceTypeRepository(ApplicationContext context) => _context = context;
 
-    public async Task<ServiceTypeEntity?> GetByIdAsync(int id)
+    public async Task<ServiceTypeEntity?> GetServiceTypeByIdAsync(int id)
     {
         return await _context.ServiceTypes.FindAsync(id);
     }

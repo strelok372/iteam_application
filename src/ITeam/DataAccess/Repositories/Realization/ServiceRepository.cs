@@ -9,15 +9,16 @@ public class ServiceRepository : IServiceRepository
     private readonly ApplicationContext _context;
     public ServiceRepository(ApplicationContext context) => _context = context;
 
-    public async Task AddServiceAsync(ServiceEntity service)
+    public async Task<ServiceEntity> AddServiceAsync(ServiceEntity service)
     {
         await _context.Services.AddAsync(service);
         await _context.SaveChangesAsync();
+        return service;
     }
 
-    public async Task DeleteServiceAsync(int serviceId)
+    public async Task DeleteServiceAsync(ServiceEntity service)
     {
-        _context.Services.Remove(await GetServiceByIdAsync(serviceId));
+        _context.Services.Remove(service);
         await _context.SaveChangesAsync();
     }
 

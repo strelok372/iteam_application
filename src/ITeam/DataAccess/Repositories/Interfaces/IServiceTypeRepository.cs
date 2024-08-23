@@ -5,6 +5,6 @@ namespace ITeam.DataAccess.Repositories;
 
 public interface IServiceTypeRepository
 {
-    public Task<ServiceTypeEntity?> GetByIdAsync(int id);
+    public Task<ServiceTypeEntity?> GetServiceTypeByIdAsync(int id);
 
 }

@@ -1,6 +1,6 @@
 using ITeam.Application.DTOs;
-using ITeam.Application.Services;
-using ITeam.Application.Services.Exaptions;
+using ITeam.Application.Services.Excaptions;
+using ITeam.Application.Services.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ITeam.Presentation.Controllers

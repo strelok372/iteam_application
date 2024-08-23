@@ -1,6 +1,6 @@
 using ITeam.Application.DTOs;
 
-namespace ITeam.Application.Services;
+namespace ITeam.Application.Services.Services;
 
 public interface IServiceService
 {

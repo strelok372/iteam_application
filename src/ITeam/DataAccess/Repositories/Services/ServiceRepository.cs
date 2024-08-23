@@ -1,8 +1,8 @@
-using System.Data.Entity;
 using ITeam.DataAccess.Models;
 using Microsoft.EntityFrameworkCore;
+using System.Data.Entity;
 
-namespace ITeam.DataAccess.Repositories;
+namespace ITeam.DataAccess.Repositories.Services;
 
 public class ServiceRepository : IServiceRepository
 {
@@ -36,5 +36,10 @@ public class ServiceRepository : IServiceRepository
     {
         _context.Services.Update(service);
         await _context.SaveChangesAsync();
+    }
+
+    public async Task<ServiceTypeEntity?> GetServiceTypeByIdAsync(int id)
+    {
+        return await _context.ServiceTypes.FindAsync(id);
     }
 }

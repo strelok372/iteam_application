@@ -1,6 +1,6 @@
 using ITeam.DataAccess.Models;
 
-namespace ITeam.DataAccess.Repositories;
+namespace ITeam.DataAccess.Repositories.Services;
 
 public interface IServiceRepository
 {
@@ -9,4 +9,6 @@ public interface IServiceRepository
     Task<ServiceEntity> AddServiceAsync(ServiceEntity service);
     Task UpdateServiceAsync(ServiceEntity service);
     Task DeleteServiceAsync(ServiceEntity service);
+    Task<ServiceTypeEntity?> GetServiceTypeByIdAsync(int id);
+
 }

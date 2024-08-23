@@ -1,4 +1,4 @@
-namespace ITeam.Application.Services.Exaptions;
+namespace ITeam.Application.Services.Excaptions;
 
 public class ServiceNotFoundExeption : NotFoundExeption
 {

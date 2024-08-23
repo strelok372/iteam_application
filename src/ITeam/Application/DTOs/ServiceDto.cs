@@ -1,4 +1,3 @@
-using System;
 using ITeam.DataAccess.Models;
 
 namespace ITeam.Application.DTOs;
@@ -9,10 +8,23 @@ public record ServiceDto
     public int ServiceTypeId { get; set; }
     public string? Description { get; set; }
 
-    public ServiceDto(ServiceEntity serviceEntity)
+    public ServiceEntity ToServiceEntity()
     {
-        Id = serviceEntity.Id;
-        ServiceTypeId = serviceEntity.ServiceTypeId;
-        Description = serviceEntity.Description;
+        return new ServiceEntity()
+        {
+            Id = Id,
+            ServiceTypeId = ServiceTypeId,
+            Description = Description
+        };
+    }
+
+    public static ServiceDto FromServiceEntity(ServiceEntity serviceEntity)
+    {
+        return new ServiceDto()
+        {
+            Id = serviceEntity.Id,
+            ServiceTypeId = serviceEntity.ServiceTypeId,
+            Description = serviceEntity.Description
+        };
     }
 }

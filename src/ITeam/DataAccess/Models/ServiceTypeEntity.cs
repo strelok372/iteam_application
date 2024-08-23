@@ -1,5 +1,3 @@
-using System;
-
 namespace ITeam.DataAccess.Models;
 
 public record ServiceTypeEntity

@@ -1,7 +1,6 @@
 using ITeam.Application.DTOs;
 using ITeam.Application.Services;
 using ITeam.Application.Services.Exaptions;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ITeam.Presentation.Controllers
@@ -17,45 +16,50 @@ namespace ITeam.Presentation.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<ServiceDto>>> GetAllServicesAsync() => Ok(await _serviceService.GetAllServicesAsync());
 
+        [HttpGet("{serviceId}")]
+        public async Task<ActionResult<ServiceDto>> GetServicesAsync(int serviceId)
+        {
+            return await _serviceService.GetServiceAsync(serviceId);
+        }
+
         [HttpPost]
-        public async Task<ActionResult> AddServiceAsync(ServiceDto service)
+        public async Task<ActionResult<ServiceDto>> AddServiceAsync(ServiceDto service)
         {
             try
             {
-                await _serviceService.AddServiceAsync(service);
-                return Ok();
+                return CreatedAtAction(nameof(GetServicesAsync), await _serviceService.AddServiceAsync(service));
             }
             catch (NotFoundExeption ex)
             {
-                return BadRequest(ex);
+                return NotFound(ex);
             }
         }
 
-        [HttpPatch("{serviceId}")]
+        [HttpPatch("{serviceId}/Description")]
         public async Task<ActionResult> UpdateServiceDescription(int serviceId, string description)
         {
             try
             {
                 await _serviceService.UpdateServiceDescriptionAsync(serviceId, description);
-                return Ok();
+                return NoContent();
             }
             catch (NotFoundExeption ex)
             {
-                return BadRequest(ex);
+                return NotFound(ex);
             }
         }
 
-        [HttpPatch("{serviceId}")]
+        [HttpPatch("{serviceId}/ServiceType")]
         public async Task<ActionResult> UpdateServiceServiceType(int serviceId, int serviceTypeId)
         {
             try
             {
                 await _serviceService.UpdateServiceServiceTypeAsync(serviceId, serviceTypeId);
-                return Ok();
+                return NoContent();
             }
             catch (NotFoundExeption ex)
             {
-                return BadRequest(ex);
+                return NotFound(ex);
             }
         }
 
@@ -65,11 +69,11 @@ namespace ITeam.Presentation.Controllers
             try
             {
                 await _serviceService.DeleteServiceAsync(serviceId);
-                return Ok();
+                return NoContent();
             }
             catch (NotFoundExeption ex)
             {
-                return BadRequest(ex);
+                return NotFound(ex);
             }
         }
     }

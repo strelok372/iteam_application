@@ -2,28 +2,28 @@ using ITeam.DataAccess.Models;
 
 namespace ITeam.Application.DTOs;
 
-public record ServiceDto
+public record ModuleDto
 {
     public int Id { get; set; }
     public int ServiceTypeId { get; set; }
     public string? Description { get; set; }
 
-    public ServiceEntity ToServiceEntity()
+    public ModuleEntity ToServiceEntity()
     {
-        return new ServiceEntity()
+        return new ModuleEntity()
         {
             Id = Id,
-            ServiceTypeId = ServiceTypeId,
+            ModuleTypeId = ServiceTypeId,
             Description = Description
         };
     }
 
-    public static ServiceDto FromServiceEntity(ServiceEntity serviceEntity)
+    public static ModuleDto FromServiceEntity(ModuleEntity serviceEntity)
     {
-        return new ServiceDto()
+        return new ModuleDto()
         {
             Id = serviceEntity.Id,
-            ServiceTypeId = serviceEntity.ServiceTypeId,
+            ServiceTypeId = serviceEntity.ModuleTypeId,
             Description = serviceEntity.Description
         };
     }

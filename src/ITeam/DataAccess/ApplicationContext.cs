@@ -46,9 +46,9 @@ namespace ITeam.DataAccess
             //    .IsUnique();
       
             // Вызов метода для предзаполнения данных из JSON
-            LoadAndSeedJsonData<UserType>(modelBuilder, "Data/userTypes.json");
-            LoadAndSeedJsonData<UserStatus>(modelBuilder, "Data/userStatuses.json");
-            LoadAndSeedJsonData<OperationType>(modelBuilder, "Data/operationTypes.json");
+            LoadAndSeedJsonData<UserType>(modelBuilder, "DataAccess/Data/userTypes.json");
+            LoadAndSeedJsonData<UserStatus>(modelBuilder, "DataAccess/Data/userStatuses.json");
+            LoadAndSeedJsonData<OperationType>(modelBuilder, "DataAccess/Data/operationTypes.json");
         }
 
         private void LoadAndSeedJsonData<T>(ModelBuilder modelBuilder, string filePath) where T : class

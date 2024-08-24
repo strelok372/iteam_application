@@ -483,3 +483,5 @@ $RECYCLE.BIN/
 
 # Vim temporary swap files
 *.swp
+/src/ITeam/Migrations
+/src/ITeam/appsettings.json

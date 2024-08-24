@@ -1,6 +1,6 @@
 using ITeam.DataAccess.Models;
 
-namespace ITeam.Application.DTOs;
+namespace ITeam.Presentation.DTOs;
 
 public record ModuleDto
 {

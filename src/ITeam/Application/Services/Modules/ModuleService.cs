@@ -1,7 +1,5 @@
-using ITeam.Application.DTOs;
 using ITeam.Application.Services.Excaptions;
-using ITeam.Application.Services.Modules;
-using ITeam.DataAccess.Repositories.Services;
+using ITeam.Presentation.DTOs;
 
 namespace ITeam.Application.Services.Modules;
 

@@ -123,7 +123,7 @@ namespace ITeam.Presentation.Controllers
                 return BadRequest(ex.Message);
             }
         }
-        // Обновление данных пользователя (администратором)
+        
         [HttpPut("{userId}")]
         [Authorize(Roles = "Administrator")]
         public async Task<ActionResult> UpdateUserByAdminAsync(int userId, [FromBody] AdminUpdateUserDto adminUpdateDto)
@@ -147,7 +147,6 @@ namespace ITeam.Presentation.Controllers
             }
         }
 
-        // Удаление пользователя
         [HttpDelete("{userId}")]
         [Authorize(Roles = "Administrator")]
         public async Task<ActionResult> DeleteUserAsync(int userId)

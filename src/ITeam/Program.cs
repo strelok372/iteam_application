@@ -13,7 +13,7 @@ public class Program
         var builder = WebApplication.CreateBuilder(args);
 
         builder.Services.AddDbContext<ApplicationContext>(options =>
-            options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
+            options.UseNpgsql(builder.Configuration.GetConnectionString(Environment.GetEnvironmentVariable("DefaultConnection"))));
 
         var app = builder.Build();
         app.Run();

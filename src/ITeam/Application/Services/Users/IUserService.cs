@@ -35,16 +35,14 @@ namespace ITeam.Application.Services.Users
         /// <summary>
         /// Обновление данных пользователя
         /// </summary>
-        /// <param name="dto">Данные для обновления пользователя</param>
-        /// <returns>Обновленный пользователь</returns>
-        Task<UserDto> UpdateUserAsync(UserUpdateDto dto);
+        Task UpdateUserAsync(int userId, UserUpdateDto dto);
 
         /// <summary>
         /// Смена пароля пользователя
         /// </summary>
         /// <param name="dto">Данные для смены пароля</param>
         /// <returns></returns>
-        Task ChangePasswordAsync(UserChangePasswordDto dto);
+        Task ChangePasswordAsync(int userId,UserChangePasswordDto dto);
 
         /// <summary>
         /// Изменение статуса пользователя (например, блокировка)

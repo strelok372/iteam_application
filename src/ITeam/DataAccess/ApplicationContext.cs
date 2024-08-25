@@ -12,31 +12,31 @@ namespace ITeam.DataAccess
         {
         }
 
-        public DbSet<User> Users;
-        public DbSet<UserType> UserTypes;
-        public DbSet<UserStatus> UserStatuses;
-        public DbSet<OperationUsers> OperationUsers;
-        public DbSet<OperationType> OperationTypes;
+        public DbSet<UserEntity> Users;
+        public DbSet<UserTypeEntity> UserTypes;
+        public DbSet<UserStatusEntity> UserStatuses;
+        public DbSet<OperationUsersEntity> OperationUsers;
+        public DbSet<OperationTypeEntity> OperationTypes;
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
 
-            modelBuilder.Entity<User>()
+            modelBuilder.Entity<UserEntity>()
                 .HasOne(u => u.UserType)
                 .WithMany(ut => ut.Users)
                 .HasForeignKey(u => u.UserTypeId);
 
-            modelBuilder.Entity<User>()
+            modelBuilder.Entity<UserEntity>()
                 .HasOne(u => u.UserStatus)
                 .WithMany(us => us.Users)
                 .HasForeignKey(u => u.UserStatusId);
 
-            modelBuilder.Entity<OperationUsers>()
+            modelBuilder.Entity<OperationUsersEntity>()
                 .HasOne(o => o.User)
                 .WithMany(u => u.Operations)
                 .HasForeignKey(o => o.UserId);
 
-            modelBuilder.Entity<OperationUsers>()
+            modelBuilder.Entity<OperationUsersEntity>()
                 .HasOne(o => o.OperationType)
                 .WithMany(ot => ot.Operations)
                 .HasForeignKey(o => o.OperationTypeId);
@@ -46,9 +46,9 @@ namespace ITeam.DataAccess
             //    .IsUnique();
       
             // Вызов метода для предзаполнения данных из JSON
-            LoadAndSeedJsonData<UserType>(modelBuilder, "DataAccess/Data/userTypes.json");
-            LoadAndSeedJsonData<UserStatus>(modelBuilder, "DataAccess/Data/userStatuses.json");
-            LoadAndSeedJsonData<OperationType>(modelBuilder, "DataAccess/Data/operationTypes.json");
+            LoadAndSeedJsonData<UserTypeEntity>(modelBuilder, "DataAccess/Data/userTypes.json");
+            LoadAndSeedJsonData<UserStatusEntity>(modelBuilder, "DataAccess/Data/userStatuses.json");
+            LoadAndSeedJsonData<OperationTypeEntity>(modelBuilder, "DataAccess/Data/operationTypes.json");
         }
 
         private void LoadAndSeedJsonData<T>(ModelBuilder modelBuilder, string filePath) where T : class

@@ -1,7 +1,7 @@
 ﻿namespace ITeam.Application.Services.Exceptions.NotFoundException
 {
    
-    public class UserNotFoundException : NotFoundExeption
+    public class UserNotFoundException : NotFoundException
     {
         public const string name = "user";
 

@@ -64,6 +64,7 @@ namespace ITeam.Application.Services.Users
         /// <param name="userId">Идентификатор пользователя</param>
         /// <returns></returns>
         Task DeleteUserAsync(int userId);
+        Task UpdateUserByAdminAsync(int userId, AdminUpdateUserDto dto);
     }
 
 }

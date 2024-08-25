@@ -1,7 +1,7 @@
 ﻿namespace ITeam.Application.Services.Exceptions.NotFoundException
 {
-    public class NotFoundExeption : Exception
+    public class NotFoundException : Exception
     {
-        public NotFoundExeption(int id, string objectName) : base($"{objectName} with id = {id} not found") { }
+        public NotFoundException(int id, string objectName) : base($"{objectName} with id = {id} not found") { }
     }
 }

@@ -122,7 +122,6 @@ namespace ITeam.Application.Services.Users
 
             await _userRepository.UpdateUserAsync(user);
         }
-
         public async Task DeleteUserAsync(int userId)
         {
             var user = await _userRepository.GetUserByIdAsync(userId);

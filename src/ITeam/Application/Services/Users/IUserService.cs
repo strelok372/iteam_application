@@ -48,22 +48,22 @@ namespace ITeam.Application.Services.Users
         /// Изменение статуса пользователя (например, блокировка)
         /// </summary>
         /// <param name="dto">Данные для обновления статуса пользователя</param>
-        /// <returns></returns>
         Task UpdateUserStatusAsync(UserStatusUpdateDto dto);
 
         /// <summary>
         /// Изменение типа пользователя (например, повышение до администратора)
         /// </summary>
         /// <param name="dto">Данные для обновления типа пользователя</param>
-        /// <returns></returns>
         Task UpdateUserTypeAsync(UserTypeUpdateDto dto);
 
         /// <summary>
         /// Удаление пользователя
         /// </summary>
         /// <param name="userId">Идентификатор пользователя</param>
-        /// <returns></returns>
         Task DeleteUserAsync(int userId);
+        /// <summary>
+        /// Обновление данных пользователя администатором
+        /// </summary>
         Task UpdateUserByAdminAsync(int userId, AdminUpdateUserDto dto);
     }
 

@@ -12,11 +12,11 @@ namespace ITeam.DataAccess
         {
         }
 
-        public DbSet<UserEntity> Users;
-        public DbSet<UserTypeEntity> UserTypes;
-        public DbSet<UserStatusEntity> UserStatuses;
-        public DbSet<OperationUsersEntity> OperationUsers;
-        public DbSet<OperationTypeEntity> OperationTypes;
+        public DbSet<UserEntity> Users { get; set; }
+        public DbSet<UserTypeEntity> UserTypes { get; set; }
+        public DbSet<UserStatusEntity> UserStatuses { get; set; }
+        public DbSet<OperationUsersEntity> OperationUsers { get; set; }
+        public DbSet<OperationTypeEntity> OperationTypes { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);

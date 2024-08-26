@@ -5,7 +5,7 @@ using ITeam.DataAccess.Repositories.Users;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
-
+using System.Configuration;
 namespace ITeam;
 public class Program
 {
@@ -15,8 +15,9 @@ public class Program
 
         //builder.Services.AddDbContext<ApplicationContext>(options =>
         //    options.UseNpgsql(builder.Configuration.GetConnectionString("database")));
+
         builder.Services.AddDbContext<ApplicationContext>(options =>
-          options.UseNpgsql(builder.Configuration.GetConnectionString(Environment.GetEnvironmentVariable("DefaultConnection"))));
+        options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 
         builder.Services.AddScoped<IHasher, Hasher>();

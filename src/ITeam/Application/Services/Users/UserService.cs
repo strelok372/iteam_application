@@ -17,6 +17,7 @@ namespace ITeam.Application.Services.Users
             _hasher = hasher;
         }
 
+
         public async Task<UserDto> RegisterUserAsync(UserRegisterDto dto)
         {
             
@@ -28,8 +29,8 @@ namespace ITeam.Application.Services.Users
 
             var user = new UserEntity
             {
-                Email = _hasher.Hash(dto.Email),
-                Name = _hasher.Hash(dto.Name),
+                Email = dto.Email,
+                Name = (dto.Name),
                 Password = _hasher.Hash(dto.Password),
                 DateRegistration = DateTime.UtcNow,
                 UserTypeId = 1,
@@ -39,11 +40,12 @@ namespace ITeam.Application.Services.Users
 
             await _userRepository.AddUserAsync(user);
 
-            return new UserDto
+            return  new UserDto
             {
                 Id = user.Id,
-                Email = dto.Email, // Do not expose hashed email
-                Name = dto.Name, // Do not expose hashed name
+                Email = dto.Email,
+                Name = (dto.Name),
+                Password = _hasher.Hash(dto.Password),
                 DateRegistration = user.DateRegistration,
                 UserType = (await _userRepository.GetUserTypeByIdAsync(user.UserTypeId))?.Name ?? "Unknown",
                 UserStatus = (await _userRepository.GetUserStatusByIdAsync(user.UserStatusId))?.Name ?? "Unknown",
@@ -72,7 +74,8 @@ namespace ITeam.Application.Services.Users
             return new UserDto
             {
                 Id = user.Id,
-                Email = user.Email, // Be careful with exposing sensitive information
+                Email = user.Email, 
+                Password = user.Password,
                 Name = user.Name,
                 DateRegistration = user.DateRegistration,
                 UserType = (await _userRepository.GetUserTypeByIdAsync(user.UserTypeId))?.Name ?? "Unknown",
@@ -92,8 +95,9 @@ namespace ITeam.Application.Services.Users
                 userDtos.Add(new UserDto
                 {
                     Id = user.Id,
-                    Email = user.Email, // Expose original email for context
-                    Name = user.Name, // Expose original name for context
+                    Email = user.Email, 
+                    Password = user.Password,
+                    Name = user.Name, 
                     DateRegistration = user.DateRegistration,
                     UserType = userType?.Name ?? "Unknown",
                     UserStatus = userStatus?.Name ?? "Unknown",
@@ -113,12 +117,12 @@ namespace ITeam.Application.Services.Users
 
             if (dto.Email != null)
             {
-                user.Email = _hasher.Hash(dto.Email); 
+                user.Email = dto.Email; 
             }
 
             if (dto.Name != null)
             {
-                user.Name = _hasher.Hash(dto.Name); 
+                user.Name = dto.Name; 
             }
 
             await _userRepository.UpdateUserAsync(user);
@@ -170,11 +174,11 @@ namespace ITeam.Application.Services.Users
             if (user == null)
                 throw new UserNotFoundException(dto.UserId);
 
-            var status = await _userRepository.GetUserTypeByIdAsync(dto.UserTypeId);
-            if (status == null)
+            var type = await _userRepository.GetUserTypeByIdAsync(dto.UserTypeId);
+            if (type == null)
                 throw new UserTypeNotFoundException(dto.UserTypeId);
 
-            user.UserStatusId = dto.UserTypeId;
+            user.UserTypeId = dto.UserTypeId;
             await _userRepository.UpdateUserAsync(user);
         }
         public async Task UpdateUserByAdminAsync(int userId, AdminUpdateUserDto dto)

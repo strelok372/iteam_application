@@ -4,6 +4,7 @@ using ITeam.Application.Services.Users;
 using ITeam.Presentation.DTOs.Users;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace ITeam.Presentation.Controllers
 {
@@ -14,21 +15,37 @@ namespace ITeam.Presentation.Controllers
         private readonly IUserService _userService;
 
         public UserController(IUserService userService) => _userService = userService;
-                
+
+       
+
+
         [HttpGet]
-        [Authorize(Roles = "Admin")]
+        //[Authorize(Roles = "Admin")]
         public async Task<ActionResult<IEnumerable<UserDto>>> GetAllUsersAsync()
         {
             return Ok(await _userService.GetAllUsersAsync());
         }
 
-        [HttpGet("{userId}")]
-        [Authorize]
+        [HttpGet("AuthorizeId/{userId}")]
+        //[Authorize]
         public async Task<ActionResult<UserDto>> GetUserAsync(int userId)
         {
             try
             {
                 return Ok(await _userService.GetUserByIdAsync(userId));
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return NotFound(ex.Message);
+            }
+        }
+
+        [HttpGet("Id/{id}")]
+        public async Task<IActionResult> GetById(int id)
+        {
+            try
+            {
+                return Ok(await _userService.GetUserByIdAsync(id));
             }
             catch (KeyNotFoundException ex)
             {
@@ -42,7 +59,7 @@ namespace ITeam.Presentation.Controllers
             try
             {
                 var user = await _userService.RegisterUserAsync(dto);
-                return CreatedAtAction(nameof(GetUserAsync), new { userId = user.Id }, user);
+                return CreatedAtAction(nameof(GetById), new { id = user.Id }, user);
             }
             catch (Exception ex)
             {
@@ -65,7 +82,7 @@ namespace ITeam.Presentation.Controllers
         }
 
         [HttpPatch("change-password")]
-        [Authorize]
+        //[Authorize]
         public async Task<ActionResult> ChangePasswordAsync(int userId, [FromBody] UserChangePasswordDto dto)
         {
             try
@@ -80,7 +97,7 @@ namespace ITeam.Presentation.Controllers
         }
 
         [HttpPut("{userId}")]
-        [Authorize]
+        //[Authorize]
         public async Task<ActionResult> UpdateUserAsync(int userId, [FromBody] UserUpdateDto dto)
         {
             try
@@ -94,8 +111,8 @@ namespace ITeam.Presentation.Controllers
             }
         }
 
-        [HttpPatch("{userId}/type")]
-        [Authorize(Roles = "Admin")]
+        [HttpPatch("type")]
+        //[Authorize(Roles = "Admin")]
         public async Task<ActionResult> UpdateUserTypeAsync([FromBody] UserTypeUpdateDto dto)
         {
             try
@@ -109,8 +126,8 @@ namespace ITeam.Presentation.Controllers
             }
         }
 
-        [HttpPatch("{userId}/status")]
-        [Authorize(Roles = "Admin")]
+        [HttpPatch("status")]
+        //[Authorize(Roles = "Admin")]
         public async Task<ActionResult> UpdateUserStatusAsync([FromBody] UserStatusUpdateDto dto)
         {
             try
@@ -124,8 +141,8 @@ namespace ITeam.Presentation.Controllers
             }
         }
 
-        [HttpPut("{userId}/admin")]
-        [Authorize(Roles = "Admin")]
+        [HttpPut("admin")]
+        //[Authorize(Roles = "Admin")]
         public async Task<ActionResult> UpdateUserByAdminAsync(int userId, [FromBody] AdminUpdateUserDto adminUpdateDto)
         {
             try
@@ -148,7 +165,7 @@ namespace ITeam.Presentation.Controllers
         }
 
         [HttpDelete("{userId}")]
-        [Authorize(Roles = "Admin")]
+        //[Authorize(Roles = "Admin")]
         public async Task<ActionResult> DeleteUserAsync(int userId)
         {
             try

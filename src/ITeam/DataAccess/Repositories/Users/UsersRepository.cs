@@ -9,7 +9,7 @@ namespace ITeam.DataAccess.Repositories.Users
 
         public UsersRepository(ApplicationContext context)
         {
-            _context = context;
+            _context = context ?? throw new ArgumentNullException(nameof(context));
         }
 
         public async Task<IEnumerable<UserEntity>> GetAllUsersAsync()
@@ -42,7 +42,6 @@ namespace ITeam.DataAccess.Repositories.Users
 
         public async Task<UserEntity?> GetByEmailAsync(string email)
         {
-            
             return await _context.Users.SingleOrDefaultAsync(u => u.Email == email);
         }
 

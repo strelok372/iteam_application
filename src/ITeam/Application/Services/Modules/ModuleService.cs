@@ -36,19 +36,10 @@ public class ModuleService : IModuleService
         return ModuleDto.FromModuleEntity(await _moduleRepository.GetModuleByIdAsync(moduleId) ?? throw new ModuleNotFoundException(moduleId));
     }
 
-    public async Task UpdateModuleDescriptionAsync(int moduleId, string description)
+    public async Task UpdateModuleAsync(ModuleDto module)
     {
-        var module = await _moduleRepository.GetModuleByIdAsync(moduleId) ?? throw new ModuleNotFoundException(moduleId);
-        await _moduleRepository.UpdateModuleAsync(module with { Description = description });
-    }
-
-    public async Task UpdateModuleTypeAsync(int moduleId, int moduleTypeId)
-    {
-        var module = await _moduleRepository.GetModuleByIdAsync(moduleId) ?? throw new ModuleNotFoundException(moduleId);
-
-        if (_moduleRepository.GetModuleTypeByIdAsync(moduleTypeId) is null)
-            throw new ModuleTypeNotFoundException(moduleTypeId);
-
-        await _moduleRepository.UpdateModuleAsync(module with { ModuleTypeId = moduleTypeId });
+        if (await _moduleRepository.GetModuleByIdAsync(module.Id) is null)
+            throw new ModuleNotFoundException(module.Id);
+        await _moduleRepository.UpdateModuleAsync(module.ToModuleEntity());
     }
 }

@@ -35,12 +35,12 @@ namespace ITeam.Presentation.Controllers
             }
         }
 
-        [HttpPatch("{moduleId}/Description")]
-        public async Task<ActionResult> UpdateModuleDescription(int moduleId, string description)
+        [HttpPut("{moduleId}")]
+        public async Task<ActionResult> UpdateModule(ModuleDto module)
         {
             try
             {
-                await _moduleService.UpdateModuleDescriptionAsync(moduleId, description);
+                await _moduleService.UpdateModuleDescriptionAsync(module);
                 return NoContent();
             }
             catch (NotFoundException ex)
@@ -48,22 +48,6 @@ namespace ITeam.Presentation.Controllers
                 return NotFound(ex);
             }
         }
-
-        /*        YAGNI
-            [HttpPatch("{moduleId}/ModuleType")]
-            public async Task<ActionResult> UpdateModuleType(int moduleId, int moduleTypeId)
-            {
-                try
-                {
-                    await _moduleService.UpdateModuleTypeAsync(moduleId, moduleTypeId);
-                    return NoContent();
-                }
-                catch (NotFoundException ex)
-                {
-                    return NotFound(ex);
-                }
-            }
-        */
 
         [HttpDelete("{moduleId}")]
         public async Task<ActionResult> DeleteService(int moduleId)

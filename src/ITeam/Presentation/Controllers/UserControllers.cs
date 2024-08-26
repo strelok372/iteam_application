@@ -1,4 +1,5 @@
-﻿using ITeam.Application.Services.Exceptions;
+﻿using ITeam.Application;
+using ITeam.Application.Services.Exceptions;
 using ITeam.Application.Services.Exceptions.NotFoundException;
 using ITeam.Application.Services.Users;
 using ITeam.Presentation.DTOs.Users;
@@ -13,10 +14,13 @@ namespace ITeam.Presentation.Controllers
     public class UserController : ControllerBase
     {
         private readonly IUserService _userService;
+        private readonly Validator _validator;
 
-        public UserController(IUserService userService) => _userService = userService;
-
-       
+        public UserController(IUserService userService, Validator validator) { 
+            _userService = userService;
+            _validator = validator;
+        }
+              
 
 
         [HttpGet]
@@ -58,6 +62,20 @@ namespace ITeam.Presentation.Controllers
         {
             try
             {
+                if (!_validator.ValidateName(dto.Name))
+                {
+                    return BadRequest("Имя должно содержать только буквы и пробелы.");
+                }
+
+                if (!_validator.ValidateEmail(dto.Email))
+                {
+                    return BadRequest("Некорректный формат электронной почты.");
+                }
+
+                if (!_validator.ValidatePassword(dto.Password))
+                {
+                    return BadRequest("Пароль должен содержать хотя бы одну букву и одну цифру, а так же содержать минимум 8 символов.");
+                }
                 var user = await _userService.RegisterUserAsync(dto);
                 return CreatedAtAction(nameof(GetById), new { id = user.Id }, user);
             }

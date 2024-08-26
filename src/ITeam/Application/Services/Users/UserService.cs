@@ -1,4 +1,5 @@
 ﻿using ITeam.Application.Services.Exceptions.NotFoundException;
+using ITeam.DataAccess.Data.Enums;
 using ITeam.DataAccess.Models;
 using ITeam.DataAccess.Repositories;
 using ITeam.DataAccess.Repositories.Users;
@@ -33,8 +34,8 @@ namespace ITeam.Application.Services.Users
                 Name = (dto.Name),
                 Password = _hasher.Hash(dto.Password),
                 DateRegistration = DateTime.UtcNow,
-                UserTypeId = 1,
-                UserStatusId = 1, // Default user status ID
+                UserTypeId = (int)UserTypeEnum.Пользователь,
+                UserStatusId = (int)UserStatusEnum.Проверен,
                 Balance = 0m
             };
 
@@ -47,8 +48,8 @@ namespace ITeam.Application.Services.Users
                 Name = (dto.Name),
                 Password = _hasher.Hash(dto.Password),
                 DateRegistration = user.DateRegistration,
-                UserType = (await _userRepository.GetUserTypeByIdAsync(user.UserTypeId))?.Name ?? "Unknown",
-                UserStatus = (await _userRepository.GetUserStatusByIdAsync(user.UserStatusId))?.Name ?? "Unknown",
+                UserType = UserTypeEnum.Пользователь.ToString(),
+                UserStatus = UserStatusEnum.Проверен.ToString(),
                 Balance = user.Balance
             };
         }
@@ -138,20 +139,17 @@ namespace ITeam.Application.Services.Users
         }
         public async Task ChangePasswordAsync(int userId, UserChangePasswordDto dto)
         {
-            // Найти пользователя по ID
             var user = await _userRepository.GetUserByIdAsync(userId);
             if (user == null)
             {
                 throw new KeyNotFoundException("User not found.");
             }
 
-            // Проверка текущего пароля
             if (!_hasher.Verify(dto.CurrentPassword, user.Password))
             {
                 throw new UnauthorizedAccessException("Current password is incorrect.");
             }
 
-            // Хэширование и обновление пароля
             user.Password = _hasher.Hash(dto.NewPassword);
             await _userRepository.UpdateUserAsync(user);
         }

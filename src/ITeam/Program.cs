@@ -1,3 +1,4 @@
+using ITeam.Application;
 using ITeam.Application.Services.Users;
 using ITeam.DataAccess;
 using ITeam.DataAccess.Repositories;
@@ -5,7 +6,6 @@ using ITeam.DataAccess.Repositories.Users;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
-using System.Configuration;
 namespace ITeam;
 public class Program
 {
@@ -19,16 +19,9 @@ public class Program
         builder.Services.AddDbContext<ApplicationContext>(options =>
         options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-
-        builder.Services.AddScoped<IHasher, Hasher>();
-        builder.Services.AddScoped<IUsersRepository, UsersRepository>();
-        builder.Services.AddScoped<IUserService, UserService>();
-
-        builder.Services.AddControllers();
-
         RepositoryInjection(builder);
-
         ServiceInjection(builder);
+        builder.Services.AddControllers();
 
         builder.Services.AddSwaggerGen(c => c.SwaggerDoc("v1", new OpenApiInfo { Title = "ITeam API", Version = "v1" }));
 
@@ -47,24 +40,19 @@ public class Program
         app.MapControllers();
         app.Run();
 
-       
-        //builder.Services.AddDbContext<ApplicationContext>(options =>
-        //   options.UseNpgsql(builder.Configuration.GetConnectionString(Environment.GetEnvironmentVariable("DefaultConnection"))));
-
-        //var app = builder.Build();
-        //app.Run();
-
-        app.MapGet("/", () => "Hello World!");
-        app.Run();
     }
 
     private static void RepositoryInjection(WebApplicationBuilder builder)
-    {
+    { 
+        builder.Services.AddScoped<IHasher, Hasher>();
+        builder.Services.AddScoped<IUsersRepository, UsersRepository>();
 
     }
 
     private static void ServiceInjection(WebApplicationBuilder builder)
     {
+        builder.Services.AddScoped<IUserService, UserService>();
+        builder.Services.AddScoped<Validator>();
 
     }
 }

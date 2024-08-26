@@ -1,4 +1,4 @@
-using ITeam.Application.Services.Excaptions;
+using ITeam.Application.Services.Exceptions.NotFoundExceptions;
 using ITeam.Application.Services.Modules;
 using ITeam.Presentation.DTOs;
 using Microsoft.AspNetCore.Mvc;
@@ -29,7 +29,7 @@ namespace ITeam.Presentation.Controllers
             {
                 return CreatedAtAction(nameof(GetModuleAsync), await _moduleService.AddModuleAsync(module));
             }
-            catch (NotFoundExeption ex)
+            catch (NotFoundException ex)
             {
                 return NotFound(ex);
             }
@@ -43,25 +43,27 @@ namespace ITeam.Presentation.Controllers
                 await _moduleService.UpdateModuleDescriptionAsync(moduleId, description);
                 return NoContent();
             }
-            catch (NotFoundExeption ex)
+            catch (NotFoundException ex)
             {
                 return NotFound(ex);
             }
         }
 
-        [HttpPatch("{moduleId}/ModuleType")]
-        public async Task<ActionResult> UpdateModuleType(int moduleId, int moduleTypeId)
-        {
-            try
+        /*        YAGNI
+            [HttpPatch("{moduleId}/ModuleType")]
+            public async Task<ActionResult> UpdateModuleType(int moduleId, int moduleTypeId)
             {
-                await _moduleService.UpdateModuleTypeAsync(moduleId, moduleTypeId);
-                return NoContent();
+                try
+                {
+                    await _moduleService.UpdateModuleTypeAsync(moduleId, moduleTypeId);
+                    return NoContent();
+                }
+                catch (NotFoundException ex)
+                {
+                    return NotFound(ex);
+                }
             }
-            catch (NotFoundExeption ex)
-            {
-                return NotFound(ex);
-            }
-        }
+        */
 
         [HttpDelete("{moduleId}")]
         public async Task<ActionResult> DeleteService(int moduleId)
@@ -71,7 +73,7 @@ namespace ITeam.Presentation.Controllers
                 await _moduleService.DeleteModuleAsync(moduleId);
                 return NoContent();
             }
-            catch (NotFoundExeption ex)
+            catch (NotFoundException ex)
             {
                 return NotFound(ex);
             }

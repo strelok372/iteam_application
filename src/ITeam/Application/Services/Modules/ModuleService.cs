@@ -1,53 +1,54 @@
-using ITeam.Application.Services.Excaptions;
+using ITeam.Application.Services.Exceptions.NotFoundExceptions;
+using ITeam.DataAccess.Repositories.Modules;
 using ITeam.Presentation.DTOs;
 
 namespace ITeam.Application.Services.Modules;
 
 public class ModuleService : IModuleService
 {
-    private readonly IModuleRepository _serviceRepository;
+    private readonly IModuleRepository _moduleRepository;
 
-    public ModuleService(IModuleRepository serviceRepository) => _serviceRepository = serviceRepository;
+    public ModuleService(IModuleRepository serviceRepository) => _moduleRepository = serviceRepository;
 
-    public async Task<ModuleDto> AddModuleAsync(ModuleDto service)
+    public async Task<ModuleDto> AddModuleAsync(ModuleDto module)
     {
-        if (_serviceRepository.GetServiceTypeByIdAsync(service.ServiceTypeId) is null)
-            throw new Exception("ServiceTypeId не существует");
+        if (_moduleRepository.GetModuleTypeByIdAsync(module.ModuleTypeId) is null)
+            throw new ModuleTypeNotFoundException(module.ModuleTypeId);
 
-        var newService = await _serviceRepository.AddServiceAsync(service.ToServiceEntity() with { Id = 0 });
+        var newModule = await _moduleRepository.AddModuleAsync(module.ToModuleEntity() with { Id = 0 });
 
-        return ModuleDto.FromServiceEntity(newService);
+        return ModuleDto.FromModuleEntity(newModule);
     }
 
-    public async Task DeleteModuleAsync(int serviceId)
+    public async Task DeleteModuleAsync(int moduleId)
     {
-        await _serviceRepository.DeleteServiceAsync(
-            await _serviceRepository.GetServiceByIdAsync(serviceId) ?? throw new ServiceNotFoundExeption(serviceId));
+        await _moduleRepository.DeleteModuleAsync(
+            await _moduleRepository.GetModuleByIdAsync(moduleId) ?? throw new ModuleNotFoundException(moduleId));
     }
 
     public async Task<IEnumerable<ModuleDto>> GetAllModulesAsync()
     {
-        return (await _serviceRepository.GetAllServicesAsync()).Select(service => ModuleDto.FromServiceEntity(service));
+        return (await _moduleRepository.GetAllModulesAsync()).Select(module => ModuleDto.FromModuleEntity(module));
     }
 
-    public async Task<ModuleDto> GetModuleAsync(int serviceId)
+    public async Task<ModuleDto> GetModuleAsync(int moduleId)
     {
-        return ModuleDto.FromServiceEntity(await _serviceRepository.GetServiceByIdAsync(serviceId) ?? throw new ServiceNotFoundExeption(serviceId));
+        return ModuleDto.FromModuleEntity(await _moduleRepository.GetModuleByIdAsync(moduleId) ?? throw new ModuleNotFoundException(moduleId));
     }
 
-    public async Task UpdateModuleDescriptionAsync(int serviceId, string description)
+    public async Task UpdateModuleDescriptionAsync(int moduleId, string description)
     {
-        var service = await _serviceRepository.GetServiceByIdAsync(serviceId) ?? throw new ServiceNotFoundExeption(serviceId);
-        await _serviceRepository.UpdateServiceAsync(service with { Description = description });
+        var module = await _moduleRepository.GetModuleByIdAsync(moduleId) ?? throw new ModuleNotFoundException(moduleId);
+        await _moduleRepository.UpdateModuleAsync(module with { Description = description });
     }
 
-    public async Task UpdateModuleTypeAsync(int serviceId, int serviceTypeId)
+    public async Task UpdateModuleTypeAsync(int moduleId, int moduleTypeId)
     {
-        var service = await _serviceRepository.GetServiceByIdAsync(serviceId) ?? throw new ServiceNotFoundExeption(serviceId);
+        var module = await _moduleRepository.GetModuleByIdAsync(moduleId) ?? throw new ModuleNotFoundException(moduleId);
 
-        if (_serviceRepository.GetServiceTypeByIdAsync(serviceTypeId) is null)
-            throw new ServiceTypeNotFoundExeption(serviceTypeId);
+        if (_moduleRepository.GetModuleTypeByIdAsync(moduleTypeId) is null)
+            throw new ModuleTypeNotFoundException(moduleTypeId);
 
-        await _serviceRepository.UpdateServiceAsync(service with { ModuleTypeId = serviceTypeId });
+        await _moduleRepository.UpdateModuleAsync(module with { ModuleTypeId = moduleTypeId });
     }
 }

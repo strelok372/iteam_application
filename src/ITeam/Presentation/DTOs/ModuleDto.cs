@@ -5,26 +5,26 @@ namespace ITeam.Presentation.DTOs;
 public record ModuleDto
 {
     public int Id { get; set; }
-    public int ServiceTypeId { get; set; }
+    public int ModuleTypeId { get; set; }
     public string? Description { get; set; }
 
-    public ModuleEntity ToServiceEntity()
+    public ModuleEntity ToModuleEntity()
     {
         return new ModuleEntity()
         {
             Id = Id,
-            ModuleTypeId = ServiceTypeId,
+            ModuleTypeId = ModuleTypeId,
             Description = Description
         };
     }
 
-    public static ModuleDto FromServiceEntity(ModuleEntity serviceEntity)
+    public static ModuleDto FromModuleEntity(ModuleEntity moduleEntity)
     {
         return new ModuleDto()
         {
-            Id = serviceEntity.Id,
-            ServiceTypeId = serviceEntity.ModuleTypeId,
-            Description = serviceEntity.Description
+            Id = moduleEntity.Id,
+            ModuleTypeId = moduleEntity.ModuleTypeId,
+            Description = moduleEntity.Description
         };
     }
 }

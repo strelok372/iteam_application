@@ -11,35 +11,35 @@ public class ModuleRepository : IModuleRepository
 
     public async Task<ModuleEntity> AddModuleAsync(ModuleEntity service)
     {
-        await _context.Services.AddAsync(service);
+        await _context.Modules.AddAsync(service);
         await _context.SaveChangesAsync();
         return service;
     }
 
     public async Task DeleteModuleAsync(ModuleEntity service)
     {
-        _context.Services.Remove(service);
+        _context.Modules.Remove(service);
         await _context.SaveChangesAsync();
     }
 
     public async Task<IEnumerable<ModuleEntity>> GetAllModulesAsync()
     {
-        return await _context.Services.ToArrayAsync();
+        return await _context.Modules.ToArrayAsync();
     }
 
     public async Task<ModuleEntity?> GetModuleByIdAsync(int serviceId)
     {
-        return await _context.Services.FirstOrDefaultAsync(service => service.Id == serviceId);
+        return await _context.Modules.FirstOrDefaultAsync(service => service.Id == serviceId);
     }
 
     public async Task UpdateModuleAsync(ModuleEntity service)
     {
-        _context.Services.Update(service);
+        _context.Modules.Update(service);
         await _context.SaveChangesAsync();
     }
 
     public async Task<ModuleTypeEntity?> GetModuleTypeByIdAsync(int id)
     {
-        return await _context.ServiceTypes.FindAsync(id);
+        return await _context.ModuleTypes.FindAsync(id);
     }
 }

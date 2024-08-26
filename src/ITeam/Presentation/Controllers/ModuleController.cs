@@ -19,7 +19,14 @@ namespace ITeam.Presentation.Controllers
         [HttpGet("{moduleId}")]
         public async Task<ActionResult<ModuleDto>> GetModuleAsync(int moduleId)
         {
-            return await _moduleService.GetModuleAsync(moduleId);
+            try
+            {
+                return await _moduleService.GetModuleAsync(moduleId);
+            }
+            catch (NotFoundException ex)
+            {
+                return NotFound(ex);
+            }
         }
 
         [HttpPost]
@@ -40,7 +47,7 @@ namespace ITeam.Presentation.Controllers
         {
             try
             {
-                await _moduleService.UpdateModuleDescriptionAsync(module);
+                await _moduleService.UpdateModuleAsync(module);
                 return NoContent();
             }
             catch (NotFoundException ex)

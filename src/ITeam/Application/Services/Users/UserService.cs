@@ -19,6 +19,7 @@ namespace ITeam.Application.Services.Users
 
         public async Task<UserDto> RegisterUserAsync(UserRegisterDto dto)
         {
+            
             var existingUser = await _userRepository.GetByEmailAsync(dto.Email);
             if (existingUser != null)
             {

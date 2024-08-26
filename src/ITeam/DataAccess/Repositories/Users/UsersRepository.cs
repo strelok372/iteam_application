@@ -40,8 +40,9 @@ namespace ITeam.DataAccess.Repositories.Users
             await _context.SaveChangesAsync();
         }
 
-        public async Task<UserEntity> GetByEmailAsync(string email)
+        public async Task<UserEntity?> GetByEmailAsync(string email)
         {
+            
             return await _context.Users.SingleOrDefaultAsync(u => u.Email == email);
         }
 

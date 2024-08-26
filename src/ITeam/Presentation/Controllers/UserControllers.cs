@@ -109,7 +109,7 @@ namespace ITeam.Presentation.Controllers
             }
         }
 
-        [HttpPatch("{userId}/type")]
+        [HttpPatch("{userId}/status")]
         [Authorize(Roles = "Admin")]
         public async Task<ActionResult> UpdateUserStatusAsync([FromBody] UserStatusUpdateDto dto)
         {
@@ -123,9 +123,9 @@ namespace ITeam.Presentation.Controllers
                 return BadRequest(ex.Message);
             }
         }
-        
-        [HttpPut("{userId}")]
-        [Authorize(Roles = "Administrator")]
+
+        [HttpPut("{userId}/admin")]
+        [Authorize(Roles = "Admin")]
         public async Task<ActionResult> UpdateUserByAdminAsync(int userId, [FromBody] AdminUpdateUserDto adminUpdateDto)
         {
             try
@@ -148,7 +148,7 @@ namespace ITeam.Presentation.Controllers
         }
 
         [HttpDelete("{userId}")]
-        [Authorize(Roles = "Administrator")]
+        [Authorize(Roles = "Admin")]
         public async Task<ActionResult> DeleteUserAsync(int userId)
         {
             try

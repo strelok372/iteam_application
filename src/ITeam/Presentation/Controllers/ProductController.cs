@@ -14,7 +14,7 @@ public class ProductController : ControllerBase
     public ProductController(IProductService productService) => _productService = productService;
 
     [HttpGet("module/{moduleId}")]
-    public async Task<ActionResult<IEnumerable<ProductDto>>> GetProductsInModule(int moduleId)
+    public async Task<ActionResult<IEnumerable<ProductDto>>> GetProductsInModuleAsync(int moduleId)
     {
         try
         {
@@ -22,12 +22,13 @@ public class ProductController : ControllerBase
         }
         catch (NotFoundException ex)
         {
-            return NotFound(ex);
+            return NotFound(ex.Message);
         }
     }
 
     [HttpGet("{productId}")]
-    public async Task<ActionResult<ProductDto>> GetProductById(int productId)
+    [ActionName(nameof(GetProductByIdAsync))]
+    public async Task<ActionResult<ProductDto>> GetProductByIdAsync(int productId)
     {
         try
         {
@@ -35,12 +36,12 @@ public class ProductController : ControllerBase
         }
         catch (NotFoundException ex)
         {
-            return NotFound(ex);
+            return NotFound(ex.Message);
         }
     }
 
-    [HttpGet("{user/{userId}/PurchasedProducts}")] // нормальный ли путь
-    public async Task<ActionResult<IEnumerable<ProductDto>>> GetPurchasedProducts(int userId)
+    [HttpGet("user/{userId}/PurchasedProducts")]
+    public async Task<ActionResult<IEnumerable<ProductDto>>> GetPurchasedProductsAsync(int userId)
     {
         try
         {
@@ -48,12 +49,12 @@ public class ProductController : ControllerBase
         }
         catch (NotFoundException ex)
         {
-            return NotFound(ex);
+            return NotFound(ex.Message);
         }
     }
 
     [HttpGet("{productId}/ConnectedProducts")]
-    public async Task<ActionResult<IEnumerable<ProductDto>>> GetConnectedProducts(int productId)
+    public async Task<ActionResult<IEnumerable<ProductDto>>> GetConnectedProductsAsync(int productId)
     {
         try
         {
@@ -61,28 +62,27 @@ public class ProductController : ControllerBase
         }
         catch (NotFoundException ex)
         {
-            return NotFound(ex);
+            return NotFound(ex.Message);
         }
     }
 
     [HttpPost]
-    public async Task<ActionResult<ProductDto>> AddProduct(ProductDto product)
+    public async Task<ActionResult<ProductDto>> AddProductAsync(ProductDto product)
     {
-
         try
         {
-            return CreatedAtAction(nameof(GetProductById), await _productService.AddProductAsync(product));
+            var newProduct = await _productService.AddProductAsync(product);
+            return CreatedAtAction(nameof(GetProductByIdAsync), new { productId = newProduct.Id }, newProduct);
         }
         catch (NotFoundException ex)
         {
-            return NotFound(ex);
+            return NotFound(ex.Message);
         }
     }
 
     [HttpPut]
-    public async Task<ActionResult> UpdateProduct(ProductDto product)
+    public async Task<ActionResult> UpdateProductAsync(ProductDto product)
     {
-
         try
         {
             await _productService.UpdateProductAsync(product);
@@ -90,14 +90,13 @@ public class ProductController : ControllerBase
         }
         catch (NotFoundException ex)
         {
-            return NotFound(ex);
+            return NotFound(ex.Message);
         }
     }
 
     [HttpDelete("{productId}")]
-    public async Task<ActionResult> DeleteProduct(int productId)
+    public async Task<ActionResult> DeleteProductAsync(int productId)
     {
-
         try
         {
             await _productService.DeleteProductAsync(productId);
@@ -105,7 +104,7 @@ public class ProductController : ControllerBase
         }
         catch (NotFoundException ex)
         {
-            return NotFound(ex);
+            return NotFound(ex.Message);
         }
     }
 }

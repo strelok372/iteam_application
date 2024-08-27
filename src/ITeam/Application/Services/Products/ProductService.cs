@@ -13,13 +13,18 @@ public class ProductService : IProductService
     private readonly IProductRepository _productRepository;
     private readonly IModuleRepository _moduleRepository;
 
-    public ProductService(IProductRepository productRepository) => _productRepository = productRepository;
+    public ProductService(IProductRepository productRepository, IModuleRepository moduleRepository)
+    {
+        _productRepository = productRepository;
+        _moduleRepository = moduleRepository;
+    }
 
     public async Task<ProductDto> AddProductAsync(ProductDto product)
     {
-        CheckModuleIdExist(product.ModuleId);
+        if (await _moduleRepository.GetModuleByIdAsync(product.ModuleId) is null)
+            throw new ModuleNotFoundException(product.ModuleId);
 
-        var newProduct = await _productRepository.AddProductAsync(product.ToEntity());
+        var newProduct = await _productRepository.AddProductAsync(product.ToEntity() with { Id = 0 });
         return ProductDto.FromEntity(newProduct);
     }
 
@@ -39,7 +44,7 @@ public class ProductService : IProductService
 
     public async Task<ProductDto> GetProductByIdAsync(int productId)
     {
-        return ProductDto.FromEntity(await _productRepository.GetProductAsync(productId)) ?? throw new ProductNotFoundException(productId);
+        return ProductDto.FromEntity(await _productRepository.GetProductAsync(productId) ?? throw new ProductNotFoundException(productId));
     }
 
     public async Task<IEnumerable<ProductDto>> GetProductsInModuleAsync(int moduleId)
@@ -52,16 +57,11 @@ public class ProductService : IProductService
         return (await _productRepository.GetPurchasedProductsAsync(userId)).Select(ProductDto.FromEntity);
     }
 
-    public async Task UpdateProductAsync(ProductDto product) /// нет проверок
+    public async Task UpdateProductAsync(ProductDto product)
     {
-        CheckModuleIdExist(product.ModuleId);
+        if (await _moduleRepository.GetModuleByIdAsync(product.ModuleId) is null)
+            throw new ModuleNotFoundException(product.ModuleId);
 
         await _productRepository.UpdateProductAsync(product.ToEntity());
-    }
-
-    private async void CheckModuleIdExist(int moduleId)
-    {
-        if (await _moduleRepository.GetModuleByIdAsync(moduleId) is null)
-            throw new ModuleNotFoundException(moduleId);
     }
 }

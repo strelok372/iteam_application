@@ -36,7 +36,8 @@ namespace ITeam.Presentation.Controllers
         {
             try
             {
-                return Ok(await _userService.GetUserByIdAsync(userId));
+                var userDto = await _userService.GetUserByIdAsync(userId);
+                return Ok(userDto);
             }
             catch (KeyNotFoundException ex)
             {
@@ -69,6 +70,7 @@ namespace ITeam.Presentation.Controllers
                 }
                 var user = await _userService.RegisterUserAsync(dto);
                 return CreatedAtAction(nameof(GetById), new { id = user.Id }, user);
+
             }
             catch (Exception ex)
             {
@@ -119,37 +121,41 @@ namespace ITeam.Presentation.Controllers
                 return BadRequest(ex.Message);
             }
         }
+        /*
+        //потом пригодится
+       [HttpPatch("type")]
+       //[Authorize(Roles = "Admin")]
+       public async Task<ActionResult> UpdateUserTypeAsync([FromBody] UserTypeUpdateDto dto)
+       {
+           try
+           {
+               await _userService.UpdateUserTypeAsync(dto);
+               return NoContent();
+           }
+           catch (Exception ex)
+           {
+               return BadRequest(ex.Message);
+           }
+       }*/
 
-        [HttpPatch("type")]
-        //[Authorize(Roles = "Admin")]
-        public async Task<ActionResult> UpdateUserTypeAsync([FromBody] UserTypeUpdateDto dto)
-        {
-            try
-            {
-                await _userService.UpdateUserTypeAsync(dto);
-                return NoContent();
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
-        }
-
-        [HttpPatch("status")]
-        //[Authorize(Roles = "Admin")]
-        public async Task<ActionResult> UpdateUserStatusAsync([FromBody] UserStatusUpdateDto dto)
-        {
-            try
-            {
-                await _userService.UpdateUserStatusAsync(dto);
-                return NoContent();
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
-        }
-
+        /*
+        //потом пригодится
+       [HttpPatch("status")]
+       //[Authorize(Roles = "Admin")]
+       public async Task<ActionResult> UpdateUserStatusAsync([FromBody] UserStatusUpdateDto dto)
+       {
+           try
+           {
+               await _userService.UpdateUserStatusAsync(dto);
+               return NoContent();
+           }
+           catch (Exception ex)
+           {
+               return BadRequest(ex.Message);
+           }
+       }*/
+        //метод UpdateUserByAdminAsync можно удалить, но пока так
+        /*
         [HttpPut("admin")]
         //[Authorize(Roles = "Admin")]
         public async Task<ActionResult> UpdateUserByAdminAsync(int userId, [FromBody] AdminUpdateUserDto adminUpdateDto)
@@ -172,6 +178,7 @@ namespace ITeam.Presentation.Controllers
                 return BadRequest(ex.Message);
             }
         }
+        */
 
         [HttpDelete("{userId}")]
         //[Authorize(Roles = "Admin")]

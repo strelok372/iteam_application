@@ -12,7 +12,7 @@ public class ModuleService : IModuleService
 
     public async Task<ModuleDto> AddModuleAsync(ModuleDto module)
     {
-        if (_moduleRepository.GetModuleTypeByIdAsync(module.ModuleTypeId) is null)
+        if (await _moduleRepository.GetModuleTypeByIdAsync(module.ModuleTypeId) is null)
             throw new ModuleTypeNotFoundException(module.ModuleTypeId);
 
         var newModule = await _moduleRepository.AddModuleAsync(module.ToModuleEntity() with { Id = 0 });
@@ -38,8 +38,8 @@ public class ModuleService : IModuleService
 
     public async Task UpdateModuleAsync(ModuleDto module)
     {
-        if (await _moduleRepository.GetModuleByIdAsync(module.Id) is null)
-            throw new ModuleNotFoundException(module.Id);
-        await _moduleRepository.UpdateModuleAsync(module.ToModuleEntity());
+        var moduleEntity = await _moduleRepository.GetModuleByIdAsync(module.Id) ?? throw new ModuleNotFoundException(module.Id);
+
+        await _moduleRepository.UpdateModuleAsync(module.UpdateEntity(moduleEntity));
     }
 }

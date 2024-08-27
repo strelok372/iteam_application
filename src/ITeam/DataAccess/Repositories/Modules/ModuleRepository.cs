@@ -1,6 +1,5 @@
 using ITeam.DataAccess.Models;
 using Microsoft.EntityFrameworkCore;
-using System.Data.Entity;
 
 namespace ITeam.DataAccess.Repositories.Modules;
 

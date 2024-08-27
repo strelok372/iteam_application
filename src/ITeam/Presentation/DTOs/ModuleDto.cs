@@ -18,6 +18,14 @@ public record ModuleDto
         };
     }
 
+    public ModuleEntity UpdateEntity(ModuleEntity moduleEntity)
+    {
+        moduleEntity.ModuleTypeId = ModuleTypeId;
+        moduleEntity.Description = Description;
+
+        return moduleEntity;
+    }
+
     public static ModuleDto FromModuleEntity(ModuleEntity moduleEntity)
     {
         return new ModuleDto()

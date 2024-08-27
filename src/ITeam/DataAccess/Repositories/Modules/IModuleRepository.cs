@@ -10,5 +10,6 @@ public interface IModuleRepository
     Task UpdateModuleAsync(ModuleEntity service);
     Task DeleteModuleAsync(ModuleEntity service);
     Task<ModuleTypeEntity?> GetModuleTypeByIdAsync(int id);
-
+    Task<bool> IsModuleExist(int moduleId);
+    Task<bool> IsModuleTypeExist(int moduleTypeId);
 }

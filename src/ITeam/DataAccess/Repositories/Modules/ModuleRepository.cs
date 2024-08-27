@@ -41,4 +41,14 @@ public class ModuleRepository : IModuleRepository
     {
         return await _context.ModuleTypes.FindAsync(id);
     }
+
+    public async Task<bool> IsModuleExist(int moduleId)
+    {
+        return await _context.Modules.AnyAsync(module => module.Id == moduleId);
+    }
+
+    public async Task<bool> IsModuleTypeExist(int moduleTypeId)
+    {
+        return await _context.ModuleTypes.AnyAsync(moduleType => moduleType.Id == moduleTypeId);
+    }
 }

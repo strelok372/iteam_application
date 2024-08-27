@@ -62,19 +62,10 @@ namespace ITeam.Presentation.Controllers
         {
             try
             {
-                if (!_validator.ValidateName(dto.Name))
+                var error = dto.Validate(_validator);
+                if (error != null)
                 {
-                    return BadRequest("Имя должно содержать только буквы и пробелы.");
-                }
-
-                if (!_validator.ValidateEmail(dto.Email))
-                {
-                    return BadRequest("Некорректный формат электронной почты.");
-                }
-
-                if (!_validator.ValidatePassword(dto.Password))
-                {
-                    return BadRequest("Пароль должен содержать хотя бы одну букву и одну цифру, а так же содержать минимум 8 символов.");
+                    return BadRequest(error);
                 }
                 var user = await _userService.RegisterUserAsync(dto);
                 return CreatedAtAction(nameof(GetById), new { id = user.Id }, user);

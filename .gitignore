@@ -6,6 +6,10 @@
 # dotenv files
 .env
 
+# VS auto generate docker folders
+/.containers/
+/.container/
+
 # User-specific files
 *.rsuser
 *.suo

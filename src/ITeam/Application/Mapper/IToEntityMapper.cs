@@ -4,5 +4,5 @@ namespace ITeam.Application.Mapper;
 
 public interface IToEntityMapper<TDto, TEntity>
 {
-    TEntity ToEntity(TDto entity);
+    TEntity ToEntity(TDto dto);
 }

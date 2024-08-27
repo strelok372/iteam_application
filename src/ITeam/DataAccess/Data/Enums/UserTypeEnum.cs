@@ -1,9 +1,9 @@
 ﻿namespace ITeam.DataAccess.Data.Enums
 {
-    public enum  UserTypeEnum
+    public enum UserTypeEnum
     {
-        Пользователь= 1,
-        Администратор = 2,
-        Специалист=3
+        User = 1,
+        Administrator = 2,
+        Specialist = 3
     }
 }

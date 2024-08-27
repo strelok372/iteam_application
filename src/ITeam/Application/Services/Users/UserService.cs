@@ -34,8 +34,8 @@ namespace ITeam.Application.Services.Users
                 Name = (dto.Name),
                 Password = _hasher.Hash(dto.Password),
                 DateRegistration = DateTime.UtcNow,
-                UserTypeId = (int)UserTypeEnum.Пользователь,
-                UserStatusId = (int)UserStatusEnum.Проверен,
+                UserTypeId = (int)UserTypeEnum.User,
+                UserStatusId = (int)UserStatusEnum.Verified,
                 Balance = 0m
             };
 
@@ -48,8 +48,8 @@ namespace ITeam.Application.Services.Users
                 Name = (dto.Name),
                 Password = _hasher.Hash(dto.Password),
                 DateRegistration = user.DateRegistration,
-                UserType = UserTypeEnum.Пользователь.ToString(),
-                UserStatus = UserStatusEnum.Проверен.ToString(),
+                UserType = UserTypeEnum.User.ToString(),
+                UserStatus = UserStatusEnum.Verified.ToString(),
                 Balance = user.Balance
             };
         }

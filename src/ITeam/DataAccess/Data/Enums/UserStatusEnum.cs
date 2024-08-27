@@ -2,9 +2,8 @@
 {
     public enum UserStatusEnum
     {
-        Проверен = 1,
-        НеПроверен = 2,
-        Заблокирован = 3
+        Verified = 1,
+        Unverified = 2,
+        Blocked = 3
     }
-    
 }

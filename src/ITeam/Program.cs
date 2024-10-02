@@ -21,6 +21,7 @@ public class Program
 
         RepositoryInjection(builder);
         ServiceInjection(builder);
+        MappersInjection(builder);
         builder.Services.AddControllers();
 
         builder.Services.AddSwaggerGen(c => c.SwaggerDoc("v1", new OpenApiInfo { Title = "ITeam API", Version = "v1" }));
@@ -44,7 +45,9 @@ public class Program
     }
 
     private static void RepositoryInjection(WebApplicationBuilder builder)
-    { 
+    {
+        builder.Services.AddScoped<IModuleRepository, ModuleRepository>();
+        builder.Services.AddScoped<IProductRepository, ProductRepository>();
         builder.Services.AddScoped<IHasher, Hasher>();
         builder.Services.AddScoped<IUsersRepository, UsersRepository>();
         builder.Services.AddScoped<IBalanceRepository, BalanceRepository>();
@@ -53,9 +56,15 @@ public class Program
 
     private static void ServiceInjection(WebApplicationBuilder builder)
     {
+        builder.Services.AddScoped<IModuleService, ModuleService>();
+        builder.Services.AddScoped<IProductService, ProductService>();
         builder.Services.AddScoped<IUserService, UserService>();
         builder.Services.AddScoped<Validator>();
         builder.Services.AddScoped<IBalanceService,BalanceService>();
 
+    private static void MappersInjection(WebApplicationBuilder builder)
+    {
+        builder.Services.AddScoped<IMapper<ModuleDto, ModuleEntity>, ModuleMapper>();
+        builder.Services.AddScoped<IMapper<ProductDto, ProductEntity>, ProductMapper>();
     }
 }

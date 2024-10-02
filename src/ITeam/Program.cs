@@ -1,4 +1,11 @@
+using ITeam.Application.Mapper;
+using ITeam.Application.Services.Modules;
+using ITeam.Application.Services.Products;
 using ITeam.DataAccess;
+using ITeam.DataAccess.Models;
+using ITeam.DataAccess.Repositories.Modules;
+using ITeam.DataAccess.Repositories.Products;
+using ITeam.Presentation.DTOs;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using ITeam.Presentation.Middlewares;
@@ -17,8 +24,8 @@ public class Program
         builder.Services.AddControllers();
 
         RepositoryInjection(builder);
-
         ServiceInjection(builder);
+        MappersInjection(builder);
 
         builder.Services.AddSwaggerGen(c => c.SwaggerDoc("v1", new OpenApiInfo { Title = "ITeam API", Version = "v1" }));
 
@@ -41,11 +48,19 @@ public class Program
 
     private static void RepositoryInjection(WebApplicationBuilder builder)
     {
-
+        builder.Services.AddScoped<IModuleRepository, ModuleRepository>();
+        builder.Services.AddScoped<IProductRepository, ProductRepository>();
     }
 
     private static void ServiceInjection(WebApplicationBuilder builder)
     {
+        builder.Services.AddScoped<IModuleService, ModuleService>();
+        builder.Services.AddScoped<IProductService, ProductService>();
+    }
 
+    private static void MappersInjection(WebApplicationBuilder builder)
+    {
+        builder.Services.AddScoped<IMapper<ModuleDto, ModuleEntity>, ModuleMapper>();
+        builder.Services.AddScoped<IMapper<ProductDto, ProductEntity>, ProductMapper>();
     }
 }

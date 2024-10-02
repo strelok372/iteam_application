@@ -1,17 +1,22 @@
+using ITeam.Application;
 using ITeam.Application.Mapper;
+using ITeam.Application.Services.Balances;
 using ITeam.Application.Services.Modules;
 using ITeam.Application.Services.Products;
+using ITeam.Application.Services.Users;
 using ITeam.DataAccess;
 using ITeam.DataAccess.Models;
+using ITeam.DataAccess.Repositories;
+using ITeam.DataAccess.Repositories.Balance;
 using ITeam.DataAccess.Repositories.Modules;
 using ITeam.DataAccess.Repositories.Products;
+using ITeam.DataAccess.Repositories.Users;
 using ITeam.Presentation.DTOs;
+using ITeam.Presentation.Middlewares;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
-using ITeam.Presentation.Middlewares;
-
 namespace ITeam;
-
 public class Program
 {
     public static void Main(string[] args)
@@ -19,13 +24,12 @@ public class Program
         var builder = WebApplication.CreateBuilder(args);
 
         builder.Services.AddDbContext<ApplicationContext>(options =>
-            options.UseNpgsql(builder.Configuration.GetConnectionString("database")));
-
-        builder.Services.AddControllers();
+        options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
         RepositoryInjection(builder);
         ServiceInjection(builder);
         MappersInjection(builder);
+        builder.Services.AddControllers();
 
         builder.Services.AddSwaggerGen(c => c.SwaggerDoc("v1", new OpenApiInfo { Title = "ITeam API", Version = "v1" }));
 
@@ -44,18 +48,26 @@ public class Program
         app.UseAuthorization();
         app.MapControllers();
         app.Run();
+
     }
 
     private static void RepositoryInjection(WebApplicationBuilder builder)
     {
         builder.Services.AddScoped<IModuleRepository, ModuleRepository>();
         builder.Services.AddScoped<IProductRepository, ProductRepository>();
+        builder.Services.AddScoped<IHasher, Hasher>();
+        builder.Services.AddScoped<IUsersRepository, UsersRepository>();
+        builder.Services.AddScoped<IBalanceRepository, BalanceRepository>();
+
     }
 
     private static void ServiceInjection(WebApplicationBuilder builder)
     {
         builder.Services.AddScoped<IModuleService, ModuleService>();
         builder.Services.AddScoped<IProductService, ProductService>();
+        builder.Services.AddScoped<IUserService, UserService>();
+        builder.Services.AddScoped<Validator>();
+        builder.Services.AddScoped<IBalanceService, BalanceService>();
     }
 
     private static void MappersInjection(WebApplicationBuilder builder)

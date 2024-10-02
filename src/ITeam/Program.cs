@@ -1,7 +1,7 @@
 using ITeam.DataAccess;
-using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
+using ITeam.Presentation.Middlewares;
 
 namespace ITeam;
 
@@ -32,6 +32,7 @@ public class Program
             app.UseSwaggerUI();
         }
 
+        app.UseMiddleware<ExceptionHandlingMiddleware>();
         app.UseHttpsRedirection();
         app.UseAuthorization();
         app.MapControllers();

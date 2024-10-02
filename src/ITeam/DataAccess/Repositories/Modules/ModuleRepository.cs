@@ -1,6 +1,5 @@
 using ITeam.DataAccess.Models;
 using Microsoft.EntityFrameworkCore;
-using System.Data.Entity;
 
 namespace ITeam.DataAccess.Repositories.Modules;
 
@@ -41,5 +40,15 @@ public class ModuleRepository : IModuleRepository
     public async Task<ModuleTypeEntity?> GetModuleTypeByIdAsync(int id)
     {
         return await _context.ModuleTypes.FindAsync(id);
+    }
+
+    public async Task<bool> IsModuleExist(int moduleId)
+    {
+        return await _context.Modules.AnyAsync(module => module.Id == moduleId);
+    }
+
+    public async Task<bool> IsModuleTypeExist(int moduleTypeId)
+    {
+        return await _context.ModuleTypes.AnyAsync(moduleType => moduleType.Id == moduleTypeId);
     }
 }

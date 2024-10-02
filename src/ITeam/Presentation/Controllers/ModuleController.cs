@@ -17,6 +17,7 @@ namespace ITeam.Presentation.Controllers
         public async Task<ActionResult<IEnumerable<ModuleDto>>> GetAllModulesAsync() => Ok(await _moduleService.GetAllModulesAsync());
 
         [HttpGet("{moduleId}")]
+        [ActionName(nameof(GetModuleAsync))]
         public async Task<ActionResult<ModuleDto>> GetModuleAsync(int moduleId)
         {
             try
@@ -25,7 +26,7 @@ namespace ITeam.Presentation.Controllers
             }
             catch (NotFoundException ex)
             {
-                return NotFound(ex);
+                return NotFound(ex.Message);
             }
         }
 
@@ -34,15 +35,20 @@ namespace ITeam.Presentation.Controllers
         {
             try
             {
-                return CreatedAtAction(nameof(GetModuleAsync), await _moduleService.AddModuleAsync(module));
+                var newModule = await _moduleService.AddModuleAsync(module);
+                return CreatedAtAction(nameof(GetModuleAsync), new { moduleId = newModule.Id }, newModule);
             }
             catch (NotFoundException ex)
             {
-                return NotFound(ex);
+                return NotFound(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
             }
         }
 
-        [HttpPut("{moduleId}")]
+        [HttpPut]
         public async Task<ActionResult> UpdateModule(ModuleDto module)
         {
             try
@@ -52,7 +58,7 @@ namespace ITeam.Presentation.Controllers
             }
             catch (NotFoundException ex)
             {
-                return NotFound(ex);
+                return NotFound(ex.Message);
             }
         }
 
@@ -66,7 +72,7 @@ namespace ITeam.Presentation.Controllers
             }
             catch (NotFoundException ex)
             {
-                return NotFound(ex);
+                return NotFound(ex.Message);
             }
         }
     }

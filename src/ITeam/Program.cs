@@ -8,6 +8,7 @@ using ITeam.DataAccess.Repositories.Products;
 using ITeam.Presentation.DTOs;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
+using ITeam.Presentation.Middlewares;
 
 namespace ITeam;
 
@@ -38,6 +39,7 @@ public class Program
             app.UseSwaggerUI();
         }
 
+        app.UseMiddleware<ExceptionHandlingMiddleware>();
         app.UseHttpsRedirection();
         app.UseAuthorization();
         app.MapControllers();

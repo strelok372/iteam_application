@@ -1,10 +1,17 @@
 using ITeam.Application;
+using ITeam.Application.Mapper;
 using ITeam.Application.Services.Balances;
+using ITeam.Application.Services.Modules;
+using ITeam.Application.Services.Products;
 using ITeam.Application.Services.Users;
 using ITeam.DataAccess;
+using ITeam.DataAccess.Models;
 using ITeam.DataAccess.Repositories;
 using ITeam.DataAccess.Repositories.Balance;
+using ITeam.DataAccess.Repositories.Modules;
+using ITeam.DataAccess.Repositories.Products;
 using ITeam.DataAccess.Repositories.Users;
+using ITeam.Presentation.DTOs;
 using ITeam.Presentation.Middlewares;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
@@ -60,7 +67,8 @@ public class Program
         builder.Services.AddScoped<IProductService, ProductService>();
         builder.Services.AddScoped<IUserService, UserService>();
         builder.Services.AddScoped<Validator>();
-        builder.Services.AddScoped<IBalanceService,BalanceService>();
+        builder.Services.AddScoped<IBalanceService, BalanceService>();
+    }
 
     private static void MappersInjection(WebApplicationBuilder builder)
     {

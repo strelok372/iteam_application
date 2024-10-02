@@ -5,6 +5,7 @@ using ITeam.DataAccess;
 using ITeam.DataAccess.Repositories;
 using ITeam.DataAccess.Repositories.Balance;
 using ITeam.DataAccess.Repositories.Users;
+using ITeam.Presentation.Middlewares;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
@@ -55,16 +56,6 @@ public class Program
         builder.Services.AddScoped<IUserService, UserService>();
         builder.Services.AddScoped<Validator>();
         builder.Services.AddScoped<IBalanceService,BalanceService>();
-
-    }
-
-    private static void RepositoryInjection(WebApplicationBuilder builder)
-    {
-
-    }
-
-    private static void ServiceInjection(WebApplicationBuilder builder)
-    {
 
     }
 }

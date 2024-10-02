@@ -1,7 +1,9 @@
 using ITeam.Application;
+using ITeam.Application.Services.Balances;
 using ITeam.Application.Services.Users;
 using ITeam.DataAccess;
 using ITeam.DataAccess.Repositories;
+using ITeam.DataAccess.Repositories.Balance;
 using ITeam.DataAccess.Repositories.Users;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
@@ -43,6 +45,7 @@ public class Program
     { 
         builder.Services.AddScoped<IHasher, Hasher>();
         builder.Services.AddScoped<IUsersRepository, UsersRepository>();
+        builder.Services.AddScoped<IBalanceRepository, BalanceRepository>();
 
     }
 
@@ -50,6 +53,7 @@ public class Program
     {
         builder.Services.AddScoped<IUserService, UserService>();
         builder.Services.AddScoped<Validator>();
+        builder.Services.AddScoped<IBalanceService,BalanceService>();
 
     }
 }

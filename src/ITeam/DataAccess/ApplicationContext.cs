@@ -17,6 +17,8 @@ namespace ITeam.DataAccess
         public DbSet<UserStatusEntity> UserStatuses { get; set; }
         public DbSet<OperationUsersEntity> OperationUsers { get; set; }
         public DbSet<OperationTypeEntity> OperationTypes { get; set; }
+        public DbSet<UserPurchaseEntity> UserPurchases { get; set; }
+        
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
@@ -53,11 +55,8 @@ namespace ITeam.DataAccess
 
         private void LoadAndSeedJsonData<T>(ModelBuilder modelBuilder, string filePath) where T : class
         {
-            // Чтение содержимого файла
             var json = File.ReadAllText(filePath);
-            // Десериализация данных в список объектов
             var data = JsonSerializer.Deserialize<List<T>>(json);
-            // Предзаполнение данных
             modelBuilder.Entity<T>().HasData(data);
         }
     }

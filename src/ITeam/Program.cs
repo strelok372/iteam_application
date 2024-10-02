@@ -34,6 +34,7 @@ public class Program
             app.UseSwaggerUI();
         }
 
+        app.UseMiddleware<ExceptionHandlingMiddleware>();
         app.UseHttpsRedirection();
         app.UseAuthorization();
         app.MapControllers();
@@ -54,6 +55,16 @@ public class Program
         builder.Services.AddScoped<IUserService, UserService>();
         builder.Services.AddScoped<Validator>();
         builder.Services.AddScoped<IBalanceService,BalanceService>();
+
+    }
+
+    private static void RepositoryInjection(WebApplicationBuilder builder)
+    {
+
+    }
+
+    private static void ServiceInjection(WebApplicationBuilder builder)
+    {
 
     }
 }
